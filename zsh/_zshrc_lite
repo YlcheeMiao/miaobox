@@ -1,0 +1,204 @@
+if [[ ! -o interactive ]]; then
+  # do nothing if not interactive
+  return
+fi
+
+if [ -f /.dockerenv ]; then
+    export ZSH_OS_TYPE=docker
+else
+# https://unix.stackexchange.com/questions/252166/how-to-configure-zshrc-for-specfic-os
+    case "$OSTYPE" in
+      darwin*)
+        export ZSH_OS_TYPE=mac
+      ;;
+      *) # all other linux
+        export ZSH_OS_TYPE=linux
+      ;;
+    esac
+fi
+
+export TERM="xterm-256color"
+# ~/.bin is our directory for custom binary executables
+export BIN_DIR=${BIN_DIR:-$HOME/.bin}
+export PATH=$PATH:$HOME/.config/bin:$BIN_DIR
+
+# ============= env var ============
+export TMUX=''
+export XDG_RUNTIME_DIR=''  # for Jupyter lab to work
+export LANG=en_US.UTF-8
+export EDITOR=vim
+
+# ====================================================
+# ============ more aliases ===============
+# ====================================================
+
+alias vzshrc='vim ~/.zshrc'
+
+alias df='df -h'  # default to human readable figures
+alias du='du -h'
+alias grep='grep --color'                     # show differences in colour
+alias egrep='egrep --color=auto'              # show differences in colour
+alias fgrep='fgrep --color=auto'              # show differences in colour
+# exa: replacement for ls https://the.exa.website/
+alias l='exa -F'                 # classify files in colour
+alias lt='exa -FT'
+alias ls='exa -F'
+alias ll='exa -FlbH'                              # long list
+alias lla='exa -FlbHa'                              # long list
+alias llt='exa -FlbHT'                              # long list
+alias la='exa -Fa'                              # all but . and ..
+alias ldir='exa -FDH'
+alias ldira='exa -FDHa'
+alias v='vim'
+alias vdiff='vim -d'
+alias colordiff='vim -d'
+alias more='more -d'
+alias catl='cat -vtn'  # show line number
+alias cp='cp -rf'
+alias mk=make
+alias grepr='grep --ignore-case -rn '
+alias findr='find . -name'
+alias clr=clear
+#alias task='pstree | grep'
+alias task='ps -A --forest | grep' #grep a task name and its process ID
+alias rmtemp='rm -f *~ .*~ .*.swp'
+
+alias ...='../..'
+alias ....='../../..'
+
+# ================= Git =================
+alias gs='git status -uno'
+alias gm='git commit'
+alias gmm='git commit -m'
+alias gmf='git commit -a' #skip the staging and commit directly
+alias gmmf='git commit -a -m' #skip the staging step
+alias gam='git commit --amend'
+alias gdiff='git diff --color'
+alias gdfc='git diff --color --cached'
+alias ggrep='git grep'
+alias grmc='grm -r --cached' # remove without deleting
+alias logmore='git log --color --graph'
+alias logdiff='git log -p --color --graph'
+alias logorigin='git log -p --color --graph origin..'
+alias logstat='git log --stat --summary --color'
+alias log='git log --graph --pretty="%Cred%h%Creset -%C(auto)%d%Creset %s %Cgreen(%ad) %C(bold blue)<%an>%Creset"'
+alias gl=log
+alias gsave='git format-patch --stdout origin > '
+alias gmv='git mv'
+alias grm='git rm -f'
+alias pusho='git push origin master'
+alias pushfo='git push -f origin master'
+alias push='git push origin'
+alias pushf='git push -f origin'
+alias pull='git pull'
+alias pullo='git pull origin'
+alias fetch='git fetch'
+alias fetcho='git fetch origin'
+alias grem='git remote'
+alias gb='git branch'
+alias gc='git checkout'
+alias gmg='git merge'
+alias gst='git stash'
+alias grev='git revert'
+alias gres='git reset'
+alias gundo='git reset --soft HEAD^'
+alias greshh='git reset --hard HEAD'
+alias gbis='git bisect'
+alias gbisg='git bisect good'
+alias gbisb='git bisect bad'
+
+# ============ Tmux =============
+export TMUX=''
+alias tnew='tmux new -s'
+alias tls='tmux ls'
+
+function ta() {
+    if [[ $# -eq 0 ]]; then
+        cmd='tmux a'
+    else
+        cmd="tmux a -t $1"
+    fi
+    echo $cmd
+    eval $cmd
+}
+
+function tkill() {
+    if [[ $# -eq 0 ]]; then
+        cmd='tmux kill-session'
+    else
+        cmd="tmux kill-session -t $1"
+    fi
+    echo $cmd
+    eval $cmd
+}
+
+# ========= Remote =========
+alias autossh='autossh -M 0 -o "ServerAliveInterval 30" -o "ServerAliveCountMax 3"'
+# port forwarding: (ID, local_port, remote_port)
+#function portge() {
+#    autossh -N -L localhost:$2:localhost:$3 $( get_sge $1 )
+#}
+
+# use rsync as a drop-in replacement for builtin cp
+# add --progress if you want to see more verbose
+alias rsyncp='rsync -raz --ignore-existing --info=progress2 --human-readable'
+
+function getip() {
+    ifconfig en0 | perl -n -e 'if (m/inet ([\d\.]+)/g) { print $1 }'
+    echo
+}
+
+# ========== Python and ML =========
+alias py=ipython
+alias act='conda activate'
+alias deact='conda deactivate'
+alias nvi='nvidia-smi'
+alias jup='jupyter lab'
+alias jupn='jupyter notebook'
+alias tb='tensorboard --port 6006 --logdir'
+function killgpus() {
+    nvidia-smi | grep 'python' | awk '{ print $3 }' | xargs -n1 kill -9
+}
+function pipupload() {
+    rm -rf dist/
+    python setup.py sdist bdist_wheel
+    twine upload dist/*
+}
+function md2rst() {
+    pandoc --from=markdown --to=rst --output=$2 $1
+}
+function rst2md() {
+    pandoc --from=rst --to=markdown --output=$2 $1
+}
+
+# ============= gcloud =============
+alias gsutilcp='gsutil -m cp -r'
+alias gcinit='gcloud compute config-ssh'
+alias gci='gcloud compute instances'
+alias gcattach='gcloud compute instances attach-disk'
+alias gcdetach='gcloud compute instances detach-disk'
+alias gcls='gcloud compute instances list'
+alias gssh='gcloud compute ssh'
+alias gscp='gcloud compute scp --recurse'
+
+# ============== Misc ===============
+function showcolor() {
+    for i in {0..255}; do print -Pn "%K{$i} %k%F{$i}${(l:3::0:)i}%f " ${${(M)$((i%8)):#7}:+$'\n'}; done
+}
+
+# ====================================================
+# >>> conda initialize >>>
+# !! Contents within this block are managed by 'conda init' !!
+__conda_setup="$('/opt/conda/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+if [ $? -eq 0 ]; then
+    eval "$__conda_setup"
+else
+    if [ -f "/opt/conda/etc/profile.d/conda.sh" ]; then
+        . "/opt/conda/etc/profile.d/conda.sh"
+    else
+        export PATH="/opt/conda/bin:$PATH"
+    fi
+fi
+unset __conda_setup
+# <<< conda initialize <<<
+

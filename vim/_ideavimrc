@@ -1,0 +1,179 @@
+" Use Vim settings, rather than Vi settings (much better!).
+" This must be first, because it changes other options as a side effect.
+set showcmd		" display incomplete commands
+set showmode
+set incsearch		" do incremental searching
+set hlsearch
+set ignorecase
+set smartcase
+set showmode
+set number
+" set relativenumber
+set scrolloff=3
+set history=100000
+set clipboard=unnamed
+
+"========== Customize key mappings
+let mapleader = ","
+"
+" Ctrl-X is for temporary Esc mode in insert mode
+" map! is for insert mode
+" inoremap <C-X> <Esc>
+inoremap <C-R> <Esc><C-R>i
+" inoremap <C-C> <C-O>u
+" inoremap <C-Y> <C-O>u
+" inoremap <C-P> <C-O>o
+" inoremap <C-B> <C-O>$;
+" noremap <C-B> $a;
+inoremap <C-G> <C-w>
+noremap <C-G> <C-w>
+"inoremap <C-z> <Esc>:w <Enter>
+"noremap <C-z> :w <Enter>
+
+" Move half page faster
+nnoremap <Space>d  <C-d>
+nnoremap <Space>u  <C-u>
+nnoremap <C-j>  <C-d>
+nnoremap <C-k>  <C-u>
+
+
+inoremap <C-d> <Delete>
+inoremap <C-A> <Home>
+noremap <C-A> <Home>
+inoremap <C-E> <End>
+noremap <C-E> <End>
+" directions shortcut
+inoremap <C-h> <Left>
+inoremap <C-j> <Down>
+inoremap <C-k> <Up>
+inoremap <C-l> <Right>
+
+" quit insert mode
+"inoremap jj <Esc>
+" quit visual mode
+vnoremap v <Esc>
+
+" Redo
+nnoremap U :action <C-r>
+
+" https://vim.fandom.com/wiki/Short_mappings_for_common_tasks
+noremap L $
+noremap H ^
+noremap ; :
+" copy text to the end-of-line
+nnoremap Y y$
+" copy an entire line, and paste it before the current line
+" Use a count to specify the line number (default is line 1).
+" For example, 12_ would copy line 12 to before the current line.
+nnoremap _ ggY``P
+
+" For quick recordings just type qq to start recording, then q to stop. 
+" You don't have to worry about the name this way (you just named the recording 'q'). 
+" Now, to play back the recording you just type Q. 
+nnoremap Q @q
+
+" ideavim emulated plugins
+set easymotion
+set surround
+set multiple-cursors
+set commentary
+
+" ================ Window management
+nnoremap zw <C-W>w
+nnoremap zd <C-W>c
+nnoremap zx <C-W>c
+nnoremap zj <C-W>j
+nnoremap zk <C-W>k
+nnoremap zh <C-W>h
+nnoremap zl <C-W>l
+nnoremap zs <C-W>s
+nnoremap z- <C-W>s
+nnoremap zv <C-W>v
+nnoremap z\| <C-W>v
+" tabs
+nnoremap zn gt
+nnoremap zt gt
+nnoremap zp gT
+
+" ================ easymotion 
+" defaults to double <Leader> key
+" https://github.com/easymotion/vim-easymotion/blob/master/doc/easymotion.txt
+map gw <Plug>(easymotion-w)
+map gW <Plug>(easymotion-W)
+map gb <Plug>(easymotion-b)
+map gB <Plug>(easymotion-B)
+map gf <Plug>(easymotion-f)
+map gF <Plug>(easymotion-F)
+"map gt <Plug>(easymotion-t)
+"map gT <Plug>(easymotion-T)
+map ge <Plug>(easymotion-e)
+map gE <Plug>(easymotion-E)
+map gj <Plug>(easymotion-j)
+map gk <Plug>(easymotion-k)
+"map gge <Plug>(easymotion-ge)
+"map ggE <Plug>(easymotion-gE)
+map gn <Plug>(easymotion-n)
+map gN <Plug>(easymotion-N)
+"map gs <Plug>(easymotion-s)
+
+" ================== Jetbrains actions
+" built in search looks better
+"nnoremap / :action Find<CR>
+" but preserve ideavim search
+"nnoremap <leader>/ /
+
+" must have <CR> or <Enter> at the end
+map <C-S-r> :source ~/.ideavimrc<CR>
+map <leader><leader>r :source ~/.ideavimrc<CR>
+map <leader><leader>a :actionlist<Space>
+" need pycharm-black plugin and pip install black
+nnoremap == :action BLACKReformatCode<CR>
+vnoremap = :action BLACKReformatCode<CR>
+
+nnoremap ga :action GotoAction<CR>
+nnoremap gc :action GotoClass<CR>
+nnoremap gd :action GotoDeclaration<CR>
+nnoremap <leader>gf :action GotoFile<CR>
+nnoremap gi :action GotoImplementation<CR>
+nnoremap gs :action GotoSymbol<CR>
+nnoremap gu :action FindUsages<CR>
+
+
+" Cmd+K
+"noremap <leader>n :action FindWordAtCaret<CR>
+" Shift+Cmd+K
+"noremap <leader>p :action FindPrevious<CR>
+
+"noremap Gb :action JumpToLastChange<CR>
+"noremap Ge :action JumpToNextChange<CR>
+noremap <leader>b :action Back<CR>
+noremap <leader>e :action Forward<CR>
+noremap <Space>b :action Back<CR>
+noremap <Space>e :action Forward<CR>
+noremap <leader>i :action QuickImplementations<CR>
+noremap <leader>d :action QuickJavaDoc<CR>
+" same as 'K' command (built in IdeaVIM)
+noremap <leader>a :action ShowIntentionActions<CR>
+noremap <leader>fp :action FindInPath<CR>
+noremap <leader>fu :action FindUsages<CR>
+nnoremap <Leader>se :action SearchEverywhere<CR>
+nnoremap <Leader>su :action ShowUsages<CR>
+
+"nnoremap <Leader>ic :action InspectCode<CR>
+nnoremap <Leader>oi :action OptimizeImports<CR>
+
+nnoremap <Leader>pm :action ShowPopupMenu<CR>
+
+nnoremap <Leader>rC :action RunToCursor<CR>
+nnoremap <Leader>rc :action ChooseRunConfiguration<CR>
+nnoremap <Leader>re :action RenameElement<CR>
+nnoremap <Leader>R :action RenameElement<CR>
+nnoremap <Leader>rf :action RenameFile<CR>
+
+nnoremap <Leader>rr :action Rerun<CR>
+
+nnoremap <Leader>si :action StepInto<CR>
+nnoremap <Leader>tb :action ToggleLineBreakpoint<CR>
+
+nnoremap <Leader>tl Vy<CR>:action ActivateTerminalToolWindow<CR>
+vnoremap <Leader>tl y<CR>:action ActivateTerminalToolWindow<CR>

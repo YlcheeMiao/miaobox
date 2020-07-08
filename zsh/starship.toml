@@ -1,0 +1,87 @@
+# https://starship.rs/config
+
+prompt_order = [
+    "directory",
+    "hostname",
+    "kubernetes",
+    "git_branch",
+    "git_commit",
+    "git_state",
+    "git_status",
+    "hg_branch",
+    "conda",
+    "python",
+    "package",
+    "golang",
+    "haskell",
+    "java",
+    "nodejs",
+    "ruby",
+    "rust",
+    "terraform",
+    "nix_shell",
+    "memory_usage",
+    "aws",
+    "env_var",
+    "crystal",
+    "username",
+    "cmd_duration",
+    "line_break",
+    "jobs",
+    "battery",
+    "time",
+    "character",
+]
+
+[character]      # The name of the module we are configuring is "character"
+symbol = "$"     # The "symbol" segment is being set to 
+#error_symbol = "✗"
+error_symbol = "$"
+vicmd_symbol = "❯"  # default is "❮"
+use_symbol_for_status = true
+
+[conda]
+symbol = "🐍 "
+style = "bold 218"
+
+[python]
+disabled = true
+
+[directory]
+truncate_to_repo = false
+truncation_length = 8
+
+[battery]
+disabled = false
+full_symbol = "🔋"
+charging_symbol = "⚡️"
+discharging_symbol = "💀"
+
+[[battery.display]]  # "bold red" style when capacity is between 0% and 10%
+threshold = 10
+style = "bold red"
+
+[[battery.display]]  # "bold yellow" style when capacity is between 10% and 30%
+threshold = 30
+style = "bold yellow"
+
+[hostname]
+ssh_only = false
+prefix = "⟪"
+suffix = "⟫"
+trim_at = ".stanford.edu"
+style = "fg:208 bg:240"  # default: "bold dimmed green"
+
+[username]
+# color palette: https://i.stack.imgur.com/KTSQa.png
+style_user = "italic 245"
+disabled = true
+
+[kubernetes]
+disabled = false
+
+[time]
+disabled = true
+format = "[ %T ]"
+use_12hr = true
+utc_time_offset = -5

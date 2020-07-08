@@ -1,0 +1,8 @@
+# =========== Linux version .bashrc ===========
+
+# If running interactively, delegate to zsh
+# otherwise do nothing
+case $- in
+    *i*) zsh; exit;;
+      *) return;;
+esac
